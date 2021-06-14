@@ -1,0 +1,6 @@
+# The build folder:
+build/
+
+# QtCreator user prefs:
+CMakeLists.txt.user
+CMakeLists.txt.user.*
