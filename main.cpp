@@ -19,12 +19,15 @@ static const int NUM_ITEMS = 30;
 
 
 
-void runQMapQString()
+/** Stress-tests the container.
+Creates many instances and fill each one with many items, then delete all the instances.
+Measures the time it takes to fill the containers and the time it takes to clear the containers. */
+template <typename StringType, typename ContainerType>
+void runTest(const std::string & aTestName)
 {
 	QElapsedTimer timer;
 	timer.start();
 
-	using ContainerType = QMap<QString, QVariant>;
 	std::vector<ContainerType> containers;
 	containers.reserve(NUM_CONTAINERS);
 	for (int i = 0; i < NUM_CONTAINERS; ++i)
@@ -32,167 +35,17 @@ void runQMapQString()
 		ContainerType container;
 		for (int j = 0; j < NUM_ITEMS; ++j)
 		{
-			QString key("minecraft");
+			StringType key("minecraft");
 			key[5] = 'A' + j;
 			container[key] = QString("SomeValue");
 		}
 		containers.push_back(std::move(container));
 	}
-	std::cout << "QMapQString: Filling  the containers took " << timer.elapsed() << " msec" << std::endl;
+	std::cout << aTestName << ": Filling  the containers took " << timer.elapsed() << " msec" << std::endl;
 
 	timer.restart();
 	containers.clear();
-	std::cout << "QMapQString: Clearing the containers took " << timer.elapsed() << " msec" << std::endl;
-}
-
-
-
-
-
-void runStdMapQString()
-{
-	QElapsedTimer timer;
-	timer.start();
-
-	using ContainerType = std::map<QString, QVariant>;
-	std::vector<ContainerType> containers;
-	containers.reserve(NUM_CONTAINERS);
-	for (int i = 0; i < NUM_CONTAINERS; ++i)
-	{
-		ContainerType container;
-		for (int j = 0; j < NUM_ITEMS; ++j)
-		{
-			QString key("minecraft");
-			key[5] = 'A' + j;
-			container[key] = QString("SomeValue");
-		}
-		containers.push_back(std::move(container));
-	}
-	std::cout << "StdMapQString: Filling  the containers took " << timer.elapsed() << " msec" << std::endl;
-
-	timer.restart();
-	containers.clear();
-	std::cout << "StdMapQString: Clearing the containers took " << timer.elapsed() << " msec" << std::endl;
-}
-
-
-
-
-
-void runStdMapStdString()
-{
-	QElapsedTimer timer;
-	timer.start();
-
-	using ContainerType = std::map<std::string, QVariant>;
-	std::vector<ContainerType> containers;
-	containers.reserve(NUM_CONTAINERS);
-	for (int i = 0; i < NUM_CONTAINERS; ++i)
-	{
-		ContainerType container;
-		for (int j = 0; j < NUM_ITEMS; ++j)
-		{
-			std::string key("minecraft");
-			key[5] = 'A' + j;
-			container[key] = QString("SomeValue");
-		}
-		containers.push_back(std::move(container));
-	}
-	std::cout << "StdMapStdString: Filling  the containers took " << timer.elapsed() << " msec" << std::endl;
-
-	timer.restart();
-	containers.clear();
-	std::cout << "StdMapStdString: Clearing the containers took " << timer.elapsed() << " msec" << std::endl;
-}
-
-
-
-
-
-void runQMapStdString()
-{
-	QElapsedTimer timer;
-	timer.start();
-
-	using ContainerType = QMap<std::string, QVariant>;
-	std::vector<ContainerType> containers;
-	containers.reserve(NUM_CONTAINERS);
-	for (int i = 0; i < NUM_CONTAINERS; ++i)
-	{
-		ContainerType container;
-		for (int j = 0; j < NUM_ITEMS; ++j)
-		{
-			std::string key("minecraft");
-			key[5] = 'A' + j;
-			container[key] = QString("SomeValue");
-		}
-		containers.push_back(std::move(container));
-	}
-	std::cout << "QMapStdString: Filling  the containers took " << timer.elapsed() << " msec" << std::endl;
-
-	timer.restart();
-	containers.clear();
-	std::cout << "QMapStdString: Clearing the containers took " << timer.elapsed() << " msec" << std::endl;
-}
-
-
-
-
-
-void runStdUnorderedMapQString()
-{
-	QElapsedTimer timer;
-	timer.start();
-
-	using ContainerType = std::unordered_map<QString, QVariant>;
-	std::vector<ContainerType> containers;
-	containers.reserve(NUM_CONTAINERS);
-	for (int i = 0; i < NUM_CONTAINERS; ++i)
-	{
-		ContainerType container;
-		for (int j = 0; j < NUM_ITEMS; ++j)
-		{
-			QString key("minecraft");
-			key[5] = 'A' + j;
-			container[key] = QString("SomeValue");
-		}
-		containers.push_back(std::move(container));
-	}
-	std::cout << "StdUnorderedMapQString: Filling  the containers took " << timer.elapsed() << " msec" << std::endl;
-
-	timer.restart();
-	containers.clear();
-	std::cout << "StdUnorderedMapQString: Clearing the containers took " << timer.elapsed() << " msec" << std::endl;
-}
-
-
-
-
-
-void runStdUnorderedMapStdString()
-{
-	QElapsedTimer timer;
-	timer.start();
-
-	using ContainerType = std::unordered_map<std::string, QVariant>;
-	std::vector<ContainerType> containers;
-	containers.reserve(NUM_CONTAINERS);
-	for (int i = 0; i < NUM_CONTAINERS; ++i)
-	{
-		ContainerType container;
-		for (int j = 0; j < NUM_ITEMS; ++j)
-		{
-			std::string key("minecraft");
-			key[5] = 'A' + j;
-			container[key] = QString("SomeValue");
-		}
-		containers.push_back(std::move(container));
-	}
-	std::cout << "StdUnorderedMapStdString: Filling  the containers took " << timer.elapsed() << " msec" << std::endl;
-
-	timer.restart();
-	containers.clear();
-	std::cout << "StdUnorderedMapStdString: Clearing the containers took " << timer.elapsed() << " msec" << std::endl;
+	std::cout << aTestName << ": Clearing the containers took " << timer.elapsed() << " msec" << std::endl;
 }
 
 
@@ -201,12 +54,12 @@ void runStdUnorderedMapStdString()
 
 int main(int, char *[])
 {
-	runQMapQString();
-	runStdMapQString();
-	runStdMapStdString();
-	runQMapStdString();
-	runStdUnorderedMapQString();
-	runStdUnorderedMapStdString();
+	runTest<QString,     QMap<QString, QVariant>>                  ("QMapQString");
+	runTest<QString,     std::map<QString, QVariant>>              ("QStdMapQString");
+	runTest<std::string, std::map<std::string, QVariant>>          ("StdMapStdString");
+	runTest<std::string, QMap<std::string, QVariant>>              ("QMapStdString");
+	runTest<QString,     std::unordered_map<QString, QVariant>>    ("StdUnorderedMapQString");
+	runTest<std::string, std::unordered_map<std::string, QVariant>>("StdUnorderedMapStdString");
 
 	// MSVC: Put a breakpoint on the following line to keep the program from terminating without seeing the output, when run in the debugger
 	std::cout << "All done." << std::endl;
