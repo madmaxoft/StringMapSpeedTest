@@ -38,3 +38,8 @@ StdUnorderedMapStdString: Filling  the containers took 22438 msec
 StdUnorderedMapStdString: Clearing the containers took 7316 msec
 ```
 This happens for both Debug and Release variants of the build, at least on Windows 8.1 with MSVC2019 as the compiler and CDB as the debugger, with Qt 5.12.1; I haven't tested on other platforms (yet).
+
+## Compiling
+You need Qt development libraries, QtCreator, a C++11 compiler and CMake. Open the CMakeLists.txt file in QtCreator and configure the project, as usual. Switch to Release build, build and run. Try running within QtCreator with the debugger attached, or standalone without the debugger, to see the difference.
+
+To run the resulting executable without QtCreator on Windows, you will need to "deploy" the Qt libraries to that executable. Navigate to your `QtBaseFolder/bin` and run `windeployqt path/to/StringMapSpeedTest.exe`, this will copy the needed Qt libraries next to the executable.
